@@ -43,6 +43,7 @@ class Geant4(CMakePackage):
     version('10.02.p01', 'b81f7082a15f6a34b720b6f15c6289cfe4ddbbbdcef0dc52719f71fac95f7f1c')
     version('10.01.p03', '4fb4175cc0dabcd517443fbdccd97439')
 
+    variant('mt', default=True, description='Enable multithreaded Geant4')
     variant('qt', default=False, description='Enable Qt support')
     variant('vecgeom', default=False, description='Enable vecgeom support')
     variant('cxx11', default=True, description='Enable CXX11 support')
@@ -61,8 +62,8 @@ class Geant4(CMakePackage):
     depends_on("clhep@2.2.0.4+cxx11~cxx14", when="@10.01.p03+cxx11~cxx14")
 
     # C++14 support
-    depends_on("clhep@2.4.0.0+cxx11~cxx14", when="@10.04~cxx11+cxx14")
-    depends_on("clhep@2.3.4.3+cxx11~cxx14", when="@10.03.p03~cxx11+cxx14")
+    depends_on("clhep@2.4.0.0~cxx11+cxx14", when="@10.04~cxx11+cxx14")
+    depends_on("clhep@2.3.4.3~cxx11+cxx14", when="@10.03.p03~cxx11+cxx14")
     depends_on("clhep@2.3.1.1~cxx11+cxx14", when="@10.02.p02~cxx11+cxx14")
     depends_on("clhep@2.3.1.1~cxx11+cxx14", when="@10.02.p01~cxx11+cxx14")
     depends_on("clhep@2.2.0.4~cxx11+cxx14", when="@10.01.p03~cxx11+cxx14")
@@ -86,7 +87,6 @@ class Geant4(CMakePackage):
             '-DGEANT4_USE_G3TOG4=ON',
             '-DGEANT4_INSTALL_DATA=ON',
             '-DGEANT4_BUILD_TLS_MODEL=global-dynamic',
-            '-DGEANT4_BUILD_MULTITHREADED=ON',
             '-DGEANT4_USE_SYSTEM_EXPAT=ON',
             '-DGEANT4_USE_SYSTEM_ZLIB=ON',
             '-DXERCESC_ROOT_DIR:STRING=%s' %
@@ -101,9 +101,14 @@ class Geant4(CMakePackage):
             if "+x11" in spec:
                 options.append('-DGEANT4_USE_RAYTRACER_X11=ON')
 
+        if '+mt' in spec:
+            options.append('-DGEANT4_BUILD_MULTITHREADED=ON')
+        else:
+            options.append('-DGEANT4_BUILD_MULTITHREADED=OFF')
+
         if '+cxx11' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++11')
-        if '+cxx14' or '+cxx1y' in spec:
+        if '+cxx14' in spec or '+cxx1y' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++14')
 
         if '+qt' in spec:
