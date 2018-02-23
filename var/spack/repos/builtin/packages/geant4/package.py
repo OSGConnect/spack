@@ -100,12 +100,11 @@ class Geant4(CMakePackage):
                 options.append('-DGEANT4_USE_XM=ON')
             if "+x11" in spec:
                 options.append('-DGEANT4_USE_RAYTRACER_X11=ON')
-
+        
         if '+mt' in spec:
             options.append('-DGEANT4_BUILD_MULTITHREADED=ON')
         else:
             options.append('-DGEANT4_BUILD_MULTITHREADED=OFF')
-
         if '+cxx11' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++11')
         if '+cxx14' in spec or '+cxx1y' in spec:
