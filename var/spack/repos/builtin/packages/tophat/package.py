@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -40,6 +40,11 @@ class Tophat(AutotoolsPackage):
 
     depends_on('boost@1.47:')
     depends_on('bowtie2', type='run')
+
+    # fix MPI_Barrier segmentation fault
+    # see https://lists.mpich.org/pipermail/discuss/2016-May/004764.html
+    # and https://lists.mpich.org/pipermail/discuss/2016-June/004768.html
+    patch('make_pair.patch', when='@2.1.1')
 
     parallel = False
 
