@@ -46,9 +46,10 @@ class Mixmod(Package):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.mixmod.org"
-    url      = "http://www.mixmod.org/IMG/tgz/mixmod_3-1-0_src.tgz"
+    url      = "http://www.mixmod.org/IMG/tgz/libmixmod_3-1-0_src.tgz"
 
     version('3-1-0', 'd82b9d87f8951c064387ad2b075e531b')
+    version('3.2.2', '3bc91221a85623ebff717687a70c0b41')
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')
