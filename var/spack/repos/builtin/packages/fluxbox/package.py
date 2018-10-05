@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2016, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -38,7 +38,7 @@ class Fluxbox(AutotoolsPackage):
 
     version('1.3.7', 'd99d7710f9daf793e0246dae5304b595')
 
-    depends_on('pkg-config', type='build')
+    depends_on('pkgconfig', type='build')
     depends_on('freetype')
     depends_on('libxrender')
     depends_on('libxext')

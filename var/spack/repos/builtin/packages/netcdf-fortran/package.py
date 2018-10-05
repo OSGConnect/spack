@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -35,6 +35,13 @@ class NetcdfFortran(AutotoolsPackage):
     version('4.4.3', 'bfd4ae23a34635b273d3eb0d91cbde9e')
 
     depends_on('netcdf')
+
+    # The default libtool.m4 is too old to handle NAG compiler properly:
+    # https://github.com/Unidata/netcdf-fortran/issues/94
+    patch('nag.patch', when='@:4.4.4%nag')
+
+    def configure_args(self):
+        return ['CPPFLAGS=-I' + self.spec['netcdf'].prefix.include]
 
     @property
     def libs(self):

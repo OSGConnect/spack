@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -29,9 +29,6 @@ class Essl(Package):
     """IBM's Engineering and Scientific Subroutine Library (ESSL)."""
 
     homepage = "https://www.ibm.com/systems/power/software/essl/"
-    url      = "ibm-essl"
-
-    version('5.5')
 
     variant('ilp64', default=False, description='64 bit integers')
     variant(

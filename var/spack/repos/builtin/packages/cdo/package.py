@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -36,6 +36,8 @@ class Cdo(AutotoolsPackage):
 
     maintainers = ['skosukhin']
 
+    version('1.9.5', '0c60f2c94dc5c76421ecf363153a5043')
+    version('1.9.4', '377c9e5aa7d8cbcb4a6c558abb2eb053')
     version('1.9.3', '13ae222164413dbd53532b03b072def5')
     version('1.9.2', '38e68d34f0b5b44a52c3241be6831423')
     version('1.9.1', 'e60a89f268ba24cee5c461f2c217829e')
