@@ -42,7 +42,10 @@ from spack.spec import Spec
 from spack.fetch_strategy import URLFetchStrategy, FetchStrategyComposite
 from spack.util.executable import ProcessError
 from spack.relocate import needs_binary_relocation, needs_text_relocation
+<<<<<<< HEAD
 from spack.relocate import strings_contains_installroot
+=======
+>>>>>>> upstream/master
 from spack.relocate import get_patchelf, relocate_text
 from spack.relocate import substitute_rpath, get_relative_rpaths
 from spack.relocate import macho_replace_paths, macho_make_paths_relative
@@ -217,10 +220,17 @@ echo $PATH"""
     stage.destroy()
 
 
+<<<<<<< HEAD
 def test_relocate_text(tmpdir):
     # Validate the text path replacement
     old_dir = '/home/spack/opt/spack'
     filename = str(tmpdir) + '/dummy.txt'
+=======
+def test_relocate_text():
+    # Validate the text path replacement
+    old_dir = '/home/spack/opt/spack'
+    filename = 'dummy.txt'
+>>>>>>> upstream/master
     with open(filename, "w") as script:
         script.write(old_dir)
         script.close()
@@ -229,9 +239,13 @@ def test_relocate_text(tmpdir):
     new_dir = '/opt/rh/devtoolset/'
     relocate_text(filenames, old_dir, new_dir)
 
+<<<<<<< HEAD
     assert(strings_contains_installroot(filename) is False)
 
     with open(filename, "r") as script:
+=======
+    with open(filename, "r")as script:
+>>>>>>> upstream/master
         for line in script:
             assert(new_dir in line)
 
