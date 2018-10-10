@@ -51,8 +51,12 @@ class Geant4(CMakePackage):
     variant('opengl', default=False, description='Optional OpenGL support')
     variant('x11', default=False, description='Optional X11 support')
     variant('motif', default=False, description='Optional motif support')
+    variant('threads', default=True, description='Build with multithreading')
 
     depends_on('cmake@3.5:', type='build')
+
+    conflicts('+cxx14', when='+cxx11')
+    conflicts('+cxx11', when='+cxx14')
 
     # C++11 support
     depends_on("clhep@2.4.0.0+cxx11~cxx14", when="@10.04+cxx11~cxx14")
@@ -107,9 +111,8 @@ class Geant4(CMakePackage):
             options.append('-DGEANT4_BUILD_MULTITHREADED=OFF')
         if '+cxx11' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++11')
-        if '+cxx14' in spec or '+cxx1y' in spec:
+        elif '+cxx14' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++14')
-
         if '+qt' in spec:
             options.append('-DGEANT4_USE_QT=ON')
             options.append(
@@ -120,6 +123,9 @@ class Geant4(CMakePackage):
             options.append('-DGEANT4_USE_USOLIDS=ON')
             options.append('-DUSolids_DIR=%s' % spec[
                 'vecgeom'].prefix.lib.CMake.USolids)
+
+        on_or_off = lambda opt: 'ON' if '+' + opt in spec else 'OFF'
+        options.append('-DGEANT4_BUILD_MULTITHREADED=' + on_or_off('threads'))
 
         return options
 
