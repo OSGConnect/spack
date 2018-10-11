@@ -36,6 +36,7 @@ class Julia(Package):
     git      = "https://github.com/JuliaLang/julia.git"
 
     version('master', branch='master')
+    version('1.0.0', sha256='1a2497977b1d43bb821a5b7475b4054b29938baae8170881c6b8dd4099d133f1')
     version('0.6.2', '255d80bc8d56d5f059fe18f0798e32f6')
     version('release-0.5', branch='release-0.5')
     version('0.5.2', '8c3fff150a6f96cf0536fb3b4eaa5cbb')
@@ -187,7 +188,12 @@ class Julia(Package):
 
         # Install some commonly used packages
         julia = spec['julia'].command
-        julia("-e", 'Pkg.init(); Pkg.update()')
+        # As of Julia 1.0, Pkg is no longer imported by default
+        # and Pkg.init is deprecated
+        if self.spec.version >= Version('1.0.0'):
+            julia("-e", 'using Pkg; Pkg.update()')
+        else:
+            julia("-e", 'Pkg.init(); Pkg.update()')
 
         # Install HDF5
         if "+hdf5" in spec:
@@ -197,9 +203,12 @@ class Julia(Package):
                 juliarc.write('push!(Libdl.DL_LOAD_PATH, "%s")\n' %
                               spec["hdf5"].prefix.lib)
                 juliarc.write('\n')
-            julia("-e", 'Pkg.add("HDF5"); using HDF5')
-            julia("-e", 'Pkg.add("JLD"); using JLD')
-
+            if self.spec.version >= Version('1.0.0'):
+                julia("-e", 'using Pkg; Pkg.add("HDF5"); using HDF5')
+                julia("-e", 'using Pkg; Pkg.add("JLD"); using JLD')
+            else:
+                julia("-e", 'Pkg.add("HDF5"); using HDF5')
+                julia("-e", 'Pkg.add("JLD"); using JLD')
         # Install MPI
         if "+mpi" in spec:
             with open(join_path(prefix, "etc", "julia", "juliarc.jl"),
@@ -222,15 +231,28 @@ class Julia(Package):
             # Python's OpenSSL package installer complains:
             # Error: PREFIX too long: 166 characters, but only 128 allowed
             # Error: post-link failed for: openssl-1.0.2g-0
-            julia("-e", 'Pkg.add("PyCall"); using PyCall')
+            if self.spec.version >= Version('1.0.0'):
+                julia("-e", 'using Pkg; Pkg.add("PyCall"); using PyCall')
+            else:
+                julia("-e", 'Pkg.add("PyCall"); using PyCall')
 
         if "+plot" in spec:
-            julia("-e", 'Pkg.add("PyPlot"); using PyPlot')
-            julia("-e", 'Pkg.add("Colors"); using Colors')
-            # These require maybe gtk and image-magick
-            julia("-e", 'Pkg.add("Plots"); using Plots')
-            julia("-e", 'Pkg.add("PlotRecipes"); using PlotRecipes')
-            julia("-e", 'Pkg.add("UnicodePlots"); using UnicodePlots')
+            if self.spec.version >= Version('1.0.0'):
+                julia("-e", 'using Pkg; Pkg.add("PyPlot"); using PyPlot')
+                julia("-e", 'using Pkg; Pkg.add("Colors"); using Colors')
+                # These require maybe gtk and image-magick
+                julia("-e", 'using Pkg; Pkg.add("Plots"); using Plots')
+                julia("-e",
+                      'using Pkg; Pkg.add("PlotRecipes"); using PlotRecipes')
+                julia("-e",
+                      'using Pkg; Pkg.add("UnicodePlots"); using UnicodePlots')
+            else:
+                julia("-e", 'Pkg.add("PyPlot"); using PyPlot')
+                julia("-e", 'Pkg.add("Colors"); using Colors')
+                # These require maybe gtk and image-magick
+                julia("-e", 'Pkg.add("Plots"); using Plots')
+                julia("-e", 'Pkg.add("PlotRecipes"); using PlotRecipes')
+                julia("-e", 'Pkg.add("UnicodePlots"); using UnicodePlots')
             julia("-e", """\
 using Plots
 using UnicodePlots
@@ -240,6 +262,11 @@ plot(x->sin(x)*cos(x), linspace(0, 2pi))
 
         # Install SIMD
         if "+simd" in spec:
-            julia("-e", 'Pkg.add("SIMD"); using SIMD')
-
-        julia("-e", 'Pkg.status()')
+            if self.spec.version >= Version('1.0.0'):
+                julia("-e", 'using Pkg; Pkg.add("SIMD"); using SIMD')
+            else:
+                julia("-e", 'Pkg.add("SIMD"); using SIMD')
+        if self.spec.version >= Version('1.0.0'):
+            julia("-e", 'using Pkg; Pkg.status()')
+        else:
+            julia("-e", 'Pkg.status()')
