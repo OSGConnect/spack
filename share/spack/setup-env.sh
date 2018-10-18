@@ -257,6 +257,9 @@ fi;
 #
 _spack_pathadd DK_NODE    "${_sp_dotkit_root%/}/$_sp_sys_type"
 _spack_pathadd MODULEPATH "${_sp_tcl_root%/}/$_sp_sys_type"
+_spack_pathadd MODULEPATH "${_sp_lmod_root%/}/$_sp_sys_type/Core"
+
+
 
 # Add programmable tab completion for Bash
 #
