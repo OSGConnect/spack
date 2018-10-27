@@ -21,3 +21,9 @@ class PyLlvmlite(PythonPackage):
     depends_on('llvm@6.0:', when='@0.23.0:')
     depends_on('llvm@4.0:4.99', when='@0.17.0:0.20.99')
     depends_on('binutils', type='build')
+
+    def setup_environment(self, spack_env, run_env):
+        print(self.spec['llvm'].prefix.bin)
+        print(spack_env)
+	print(self.spec['llvm'].llvm-config)
+        spack_env.set('LLVM_CONFIG', join_path(self.spec['llvm'].prefix.bin, 'llvm-config')) 
