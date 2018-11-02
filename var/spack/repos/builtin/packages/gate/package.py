@@ -51,6 +51,8 @@ class Gate(CMakePackage):
     #version('7.2', 'ae399c0af959846c018069d554fd05a9')
     #version('7.2', '02816b66f4fcf49200bfb6caae51ba66')
     version('8.0', '5914ac7a93ef02b10943f850c4473429')
+    
+
 
     variant('cxx11', default=True, description="Compile using c++11 dialect.")
 
@@ -58,8 +60,7 @@ class Gate(CMakePackage):
 
     depends_on('root')
 
-    depends_on('geant4@10.03.p03+cxx11~cxx14~mt', when='@8.0+cxx11')
-    depends_on('clhep@2.3.4.3+cxx11~cxx14', when='@8.0+cxx11')
+    depends_on('geant4@10.03:+cxx11~cxx14~mt', when='@8.0+cxx11')
 
     def cmake_args(self):
         spec = self.spec
