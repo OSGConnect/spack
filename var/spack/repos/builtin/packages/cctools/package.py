@@ -15,6 +15,7 @@ class Cctools(AutotoolsPackage):
     homepage = "https://github.com/cooperative-computing-lab/cctools"
     url      = "https://github.com/cooperative-computing-lab/cctools/archive/release/6.1.1.tar.gz"
 
+    version('7.0.8', '99be8fda5830a630ea513ee0e51b7c8b')
     version('6.1.1', '9b43cdb3aceebddc1608c77184590619')
 
     depends_on('openssl')
