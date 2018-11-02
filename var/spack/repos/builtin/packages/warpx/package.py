@@ -20,7 +20,7 @@ class Warpx(MakefilePackage):
     version('master', git='https://github.com/ECP-WarpX/WarpX.git', tag='master')
     version('dev', git='https://github.com/ECP-WarpX/WarpX.git', tag='dev')
 
-    depends_on('mpi', when='+mpi')
+    depends_on('mpi')
 
     variant('dims',
             default='3',
@@ -73,6 +73,12 @@ class Warpx(MakefilePackage):
         makefile.filter('TINY_PROFILE .*',
                         'TINY_PROFILE = {0}'.format(torf('+tprof')))
         makefile.filter('EBASE .*', 'EBASE = warpx')
+
+    def setup_environment(self, spack_env, run_env):
+        # --- Fool the compiler into using the "unknown" configuration.
+        # --- With this, it will use the spack provided mpi.
+        spack_env.set('HOSTNAME', 'unknown')
+        spack_env.set('NERSC_HOST', 'unknown')
 
     def install(self, spec, prefix):
         make('WarpxBinDir = {0}'.format(prefix.bin), 'all')
