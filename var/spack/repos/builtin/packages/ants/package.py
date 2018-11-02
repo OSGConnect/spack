@@ -18,7 +18,11 @@ class Ants(CMakePackage):
     homepage = "http://stnava.github.io/ANTs/"
     url      = "https://github.com/ANTsX/ANTs/archive/v2.2.0.tar.gz"
 
+    version('2.3.1', '75922052ef1cba832d7eb9e90a76688a')
     version('2.2.0', '5661b949268100ac0f7baf6d2702b4dd')
+
+    depends_on('itk')
+    depends_on('cmake')
 
     def install(self, spec, prefix):
         with working_dir(join_path('spack-build', 'ANTS-build'), create=False):
