@@ -52,7 +52,7 @@ class Mixmod(Package):
     version('3.2.2', '3bc91221a85623ebff717687a70c0b41')
 
     # FIXME: Add dependencies if required.
-    # depends_on('foo')
+    depends_on('cmake')
 
     def install(self, spec, prefix):
         with working_dir('BUILD', create=True):
