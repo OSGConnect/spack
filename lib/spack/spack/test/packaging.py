@@ -24,6 +24,7 @@ from spack.paths import mock_gpg_keys_path
 from spack.fetch_strategy import URLFetchStrategy, FetchStrategyComposite
 from spack.util.executable import ProcessError
 from spack.relocate import needs_binary_relocation, needs_text_relocation
+from spack.relocate import strings_contains_installroot
 from spack.relocate import get_patchelf, relocate_text
 from spack.relocate import substitute_rpath, get_relative_rpaths
 from spack.relocate import macho_replace_paths, macho_make_paths_relative
