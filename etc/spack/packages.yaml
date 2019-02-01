@@ -1,0 +1,17 @@
+# https://github.com/spack/spack/issues/311
+# https://github.com/spack/spack/issues/3786
+# https://github.com/spack/spack/issues/2215
+#  python:
+#    paths:
+#      python@3.5.2+tk: /path/to/python/installation/prefix
+#    buildable: False
+packages:
+  all:
+    variants: ~mpi
+  libxml2:
+    variants: +python
+  boost:
+    variants: +python
+  pcre:
+    variants: +jit
+

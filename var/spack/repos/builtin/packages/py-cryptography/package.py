@@ -25,5 +25,5 @@ class PyCryptography(PythonPackage):
     depends_on('py-idna@2.1:',          type=('build', 'run'))
     depends_on('py-enum34',             type=('build', 'run'), when='^python@:3.4')
     depends_on('py-ipaddress',          type=('build', 'run'), when='^python@:3.3')
-    depends_on('openssl@:1.0', when='@:1.8.1')
+    depends_on('openssl@:1.0.2o', when='@:1.8.1')
     depends_on('openssl')

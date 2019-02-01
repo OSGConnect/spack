@@ -1,0 +1,311 @@
+#!/usr/bin/python
+
+import collections
+import re
+import subprocess
+import sys
+
+spack = '/cvmfs/connect.opensciencegrid.org/modules/spack/bin/spack'
+
+compiler = 'gcc@6.4.0spack'
+
+# special keys:
+#   'deps' - Explicit dependency on package
+#   'flags' - Flags for the spack install command (for example, --no-checksum)
+#   'options' - Build options for the package
+pkgs = collections.OrderedDict()
+
+# order of package matter somewhat - for example python has to be built pretty early
+
+pkgs['autoconf@2.69'] = {}
+pkgs['automake@1.16.1'] = {}
+pkgs['m4@1.4.18'] = {}
+pkgs['openssl@1.0.2o'] = {}
+pkgs['openssl@1.1.1'] = {}
+pkgs['python@2.7.15'] = {'deps': ['openssl@1.0.2o']}
+pkgs['python@3.7.0'] = {'deps': ['openssl@1.0.2o']}
+
+
+pkgs['gettext@0.19.8.1__py27'] = {}
+pkgs['gettext@0.19.8.1__py37'] = {}
+pkgs['libxml2@2.9.8__py27'] = {}
+pkgs['libxml2@2.9.8__py37'] = {}
+pkgs['openblas@0.3.3'] = {'options': ['cpu_target=SSE_GENERIC', 'virtual_machine=True']}
+
+pkgs['binutils@2.31.1__py27'] = {}
+pkgs['binutils@2.31.1__py37'] = {}
+pkgs['zlib@1.2.11'] = {}
+pkgs['bzip2@1.0.6'] = {}
+pkgs['cmake@3.12.3'] = {'deps': ['openssl@1.0.2o']}
+pkgs['cmake@3.13.0'] = {'deps': ['openssl@1.0.2o']}
+pkgs['curl@7.60.0'] = {'deps': ['openssl@1.0.2o']}
+pkgs['gdbm@1.14.1'] = {}
+pkgs['gdbm@1.18.1'] = {}
+pkgs['perl@5.26.2'] = {}
+
+pkgs['boost@1.68.0__py27'] = {}
+pkgs['boost@1.68.0__py37'] = {}
+pkgs['glib@2.56.2__py27'] = {}
+pkgs['fftw@3.3.8'] = {'options': ['simd=sse2']}
+pkgs['flex@2.6.3'] = {}
+pkgs['hdf5@1.10.3'] = {}
+pkgs['libgd@2.2.4__py27'] = {}
+pkgs['libiconv@1.15'] = {}
+pkgs['libjpeg-turbo@1.5.90'] = {}
+pkgs['libpng@1.6.34'] = {}
+pkgs['libpthread-stubs@0.4'] = {}
+pkgs['libsigsegv@2.11'] = {}
+pkgs['font-util@1.3.1'] = {}
+pkgs['fontconfig@2.12.3__py27'] = {}
+pkgs['freetype@2.9.1'] = {}
+pkgs['libbsd@0.8.6'] = {}
+pkgs['libcerf@1.3'] = {}
+pkgs['libedit@3.1-20170329'] = {}
+pkgs['libffi@3.2.1'] = {}
+pkgs['libice@1.0.9'] = {}
+pkgs['libsm@1.2.2'] = {}
+pkgs['libtiff@4.0.9'] = {}
+pkgs['libtool@2.4.6'] = {}
+pkgs['libx11@1.6.5'] = {}
+pkgs['libxau@1.0.8'] = {}
+pkgs['libxcb@1.13'] = {}
+pkgs['libxdmcp@1.1.2'] = {}
+pkgs['libxext@1.3.3'] = {}
+pkgs['libxft@2.3.2__py37'] = {}
+pkgs['libxpm@3.5.12__py27'] = {}
+pkgs['libxrender@0.9.10'] = {}
+pkgs['llvm@7.0.0__py27'] = {}
+pkgs['ncurses@6.1'] = {}
+pkgs['netcdf@4.6.1'] = {}
+pkgs['pango@1.41.0__py27'] = {}
+pkgs['pcre@8.42'] = {}
+pkgs['tar@1.30'] = {}
+pkgs['cfitsio@3.450'] = {}
+pkgs['gsl@2.5'] = {}
+
+pkgs['bowtie2@2.3.4.1__py27'] = {}
+pkgs['bwa@0.7.17'] = {}
+pkgs['bullet3@2.87'] = {'deps': ['cmake@3.13.0']}
+pkgs['charmpp@6.8.2'] = {}
+pkgs['clhep@2.4.0.0'] = {}
+pkgs['diffutils@3.6'] = {}
+pkgs['emacs@26.1'] = {}
+pkgs['ffmpeg@3.2.4'] = {}
+pkgs['geant4@10.04.p02'] = {'flags': ['--no-checksum'], 'options': ['mt=True']}
+### #$SPACK_INSTALL globus-toolkit@6.0.1506371041'] = {}
+pkgs['gnuplot@5.2.2__py27'] = {}
+pkgs['gobject-introspection@1.49.2__py27'] = {}
+pkgs['gperf@3.0.4'] = {}
+pkgs['gsoap@2.8.55'] = {}
+pkgs['harfbuzz@1.4.6__py27'] = {}
+pkgs['help2man@1.47.4'] = {}
+pkgs['hisat2@2.1.0'] = {}
+pkgs['icu4c@60.1'] = {}
+pkgs['inputproto@2.3.2'] = {}
+pkgs['intel-tbb@2019'] = {}
+pkgs['jdk@11.0.1'] = {}
+### #$SPACK_INSTALL --no-checksum julia@1.0.1__py27'] = {}
+pkgs['kbproto@1.0.7'] = {}
+pkgs['lammps@20180822'] = {}
+pkgs['matlab@R2018b'] = {}
+pkgs['mixmod@3.2.2'] = {'deps': ['openssl@1.0.2o', 'cmake@3.13.0']}
+pkgs['mummer@3.23__py27'] = {}
+pkgs['nasm@2.13.03'] = {}
+
+pkgs['pixman@0.34.0'] = {}
+pkgs['pkgconf@1.4.2'] = {}
+pkgs['pkgconf@1.5.4'] = {}
+pkgs['qhull@2015.2'] = {'deps': ['cmake@3.13.0']}
+pkgs['r@3.5.1__py27'] = {}
+pkgs['raxml@8.2.11'] = {'options': ['sse=False', 'mpi=False']}
+pkgs['readline@7.0'] = {}
+pkgs['renderproto@0.11.1'] = {}
+pkgs['root@6.14.04__py27'] = {'flags': ['--no-checksum'], 'deps': ['fftw@3.3.8']}
+pkgs['sparsehash@2.0.3'] = {}
+pkgs['sqlite@3.23.1'] = {}
+pkgs['sqlite@3.25.3'] = {}
+pkgs['stashcache@5.1.2__py27'] = {}
+pkgs['swig@3.0.12'] = {}
+pkgs['tcl@8.6.8'] = {}
+pkgs['tk@8.6.8'] = {}
+pkgs['udunits2@2.2.24'] = {}
+pkgs['util-macros@1.19.1'] = {}
+pkgs['xcb-proto@1.13'] = {}
+pkgs['xerces-c@3.2.2'] = {}
+pkgs['xextproto@7.3.0'] = {}
+pkgs['xproto@7.0.31'] = {}
+pkgs['xrootd@4.8.3__py27'] = {}
+pkgs['xtrans@1.3.5'] = {}
+pkgs['xz@5.2.4'] = {}
+pkgs['yasm@1.3.0'] = {}
+pkgs['git@2.19.1'] = {'deps': ['openssl@1.0.2o', 'gettext@0.19.8.1__py27'] }
+pkgs['hwloc@1.11.9'] = {'deps': ['libxml2@2.9.8__py27']}
+pkgs['openmpi@3.1.3'] = {'options': ['vt=False'], 'deps': ['sqlite@3.25.3', 'hwloc@1.11.9']}
+
+
+
+pkgs['py-numpy@1.15.2__py27'] = {'deps': ['openblas@0.3.3']}
+pkgs['py-numpy@1.15.2__py37'] = {'deps': ['openblas@0.3.3']}
+
+pkgs['py-bottleneck@1.2.1__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-bottleneck@1.2.1__py37'] = {'deps': ['py-numpy@1.15.2__py37']}
+
+pkgs['py-setuptools@40.4.3__py27'] = {}
+pkgs['py-setuptools@40.4.3__py37'] = {}
+pkgs['py-asn1crypto@0.22.0__py27'] = {}
+pkgs['py-asn1crypto@0.22.0__py37'] = {}
+pkgs['py-cffi@1.11.5__py27'] = {}
+pkgs['py-cffi@1.11.5__py37'] = {}
+pkgs['py-cryptography@1.8.1__py27'] = {}
+pkgs['py-cryptography@1.8.1__py37'] = {}
+pkgs['py-cycler@0.10.0__py27'] = {}
+pkgs['py-cycler@0.10.0__py37'] = {}
+pkgs['py-cython@0.28.3__py27'] = {}
+pkgs['py-cython@0.28.3__py37'] = {}
+pkgs['py-dateutil@2.5.2__py27'] = {}
+pkgs['py-dateutil@2.5.2__py37'] = {}
+pkgs['py-enum34@1.1.6__py27'] = {}
+pkgs['py-functools32@3.2.3-2__py27'] = {}
+pkgs['py-h5py@2.8.0__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-idna@2.5__py27'] = {}
+pkgs['py-idna@2.5__py37'] = {}
+pkgs['py-ipaddress@1.0.18__py27'] = {}
+pkgs['py-kiwisolver@1.0.1__py27'] = {}
+pkgs['py-kiwisolver@1.0.1__py37'] = {}
+pkgs['py-lit@0.5.0__py27'] = {}
+pkgs['py-matplotlib@2.2.3__py27'] = {'deps': ['py-numpy@1.15.2__py27', 'gettext@0.19.8.1__py27']}
+pkgs['py-matplotlib@3.0.0__py37'] = {'deps': ['py-numpy@1.15.2__py37', 'gettext@0.19.8.1__py37']}
+pkgs['py-nose@1.3.7__py27'] = {}
+pkgs['py-numexpr@2.6.5__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-numexpr@2.6.5__py37'] = {'deps': ['py-numpy@1.15.2__py37']}
+pkgs['py-pandas@0.23.4__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-pandas@0.23.4__py37'] = {'deps': ['py-numpy@1.15.2__py37']}
+pkgs['py-paramiko@2.1.2__py27'] = {}
+pkgs['py-paramiko@2.1.2__py37'] = {}
+pkgs['py-pillow@5.1.0__py27'] = {}
+pkgs['py-pillow@5.1.0__py37'] = {}
+pkgs['py-pkgconfig@1.2.2__py27'] = {}
+pkgs['py-pyasn1@0.2.3__py27'] = {}
+pkgs['py-pyasn1@0.2.3__py37'] = {}
+pkgs['py-pycparser@2.18__py27'] = {}
+pkgs['py-pycparser@2.18__py37'] = {}
+pkgs['py-pyparsing@2.2.0__py27'] = {}
+pkgs['py-pyparsing@2.2.0__py37'] = {}
+pkgs['py-pytz@2017.2__py27'] = {}
+pkgs['py-pytz@2017.2__py37'] = {}
+pkgs['py-scikit-learn@0.20.0__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-scikit-learn@0.20.0__py37'] = {'deps': ['py-numpy@1.15.2__py37']}
+pkgs['py-scipy@1.1.0__py27'] = {'deps': ['py-numpy@1.15.2__py27']}
+pkgs['py-scipy@1.1.0__py37'] = {'deps': ['py-numpy@1.15.2__py37']}
+pkgs['py-six@1.11.0__py27'] = {}
+pkgs['py-six@1.11.0__py37'] = {}
+pkgs['py-subprocess32@3.2.7__py27'] = {}
+pkgs['pybullet@2.3.5__py27'] = {}
+
+
+def print_indent(s, level):
+    prespace = ''
+    for i in range(level * 3):
+        prespace += ' '
+
+    lines = s.strip().split('\n')
+    for line in lines:
+        if line is not '':
+            print(prespace + line)
+    sys.stdout.flush()
+
+
+def build(pkg, level = 0):
+    global pkgs
+
+    print_indent('Installing ' + pkg + ' ...', level)
+
+    deps = []
+    if 'deps' in pkgs[pkg]:
+        for dep in pkgs[pkg]['deps']:
+            if 'hash' not in  pkgs[dep]:
+                 build(dep, level + 1)
+            # add the hash of the existing package
+            dep_name = re.sub('__py[0-9]+$', '', dep)
+            deps.append('^' + dep_name + '%' + compiler + '/' + pkgs[dep]['hash'])
+    full_name = pkg
+    if re.search('__py27$', pkg):
+        full_name = re.sub('__py27$', '', pkg)
+        deps.append('^python@2.7.15%' + compiler + '/' + pkgs['python@2.7.15']['hash'])
+    if re.search('__py37$', pkg):
+        full_name = re.sub('__py37$', '', pkg)
+        deps.append('^python@3.7.0%' + compiler + '/' + pkgs['python@3.7.0']['hash'])
+
+    cmd = [spack, 'install', '--yes-to-all']
+    if 'flags' in pkgs[pkg]:
+        for flag in pkgs[pkg]['flags']:
+            cmd.append(flag)
+    cmd.append(full_name + '%' + compiler)
+    if 'options' in pkgs[pkg]:
+        for opt in pkgs[pkg]['options']:
+            cmd.append(opt)
+    for dep in deps:
+        cmd.append(dep)
+    
+    print_indent(str(cmd), level + 1)
+    p = subprocess.Popen(cmd,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    output,error = p.communicate()
+    success = p.returncode == 0
+        
+    print_indent(output, level + 1)
+    print_indent(error, level + 1)
+
+    if not success:
+        raise RuntimeError('Build failed!')
+
+    # run one more time so we can capture the hash
+    p = subprocess.Popen(cmd,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    output,error = p.communicate()
+    success = p.returncode == 0
+    lines = output.strip().split('\n')
+    if len(lines) != 1:
+        raise RuntimeError('Expected a single line indicating the packages is installed. Got: ' + output + error)
+    if not 'is already installed in' in output:
+        raise RuntimeError('Expected a single line indicating the packages is installed. Got: ' + output + error)
+    output = output.strip()
+    pkg_hash = re.sub('.*-', '', output)
+    if len(pkg_hash) != 32:
+        raise RuntimeError('Expected a 32 byte hash. Got: ' + pkg_hash)
+    pkgs[pkg]['hash'] = pkg_hash
+
+
+def regenerate_modules():
+    print_indent('.', 0)
+    print_indent('Ensuring modules generation still works...', 0)
+    cmd = [spack, 'module', 'lmod', 'refresh', '--yes-to-all']
+    p = subprocess.Popen(cmd,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    output,error = p.communicate()
+    print_indent(output, 0)
+    print_indent(error, 0)
+    success = p.returncode == 0
+    if not success:
+        raise RuntimeError('modules could not be generated')
+
+def build_all():
+    total = len(pkgs)
+    i = 0
+    for pkg in pkgs:
+        i += 1
+        print_indent('.', 0)
+        print_indent('Processing package ' + str(i) + ' of ' + str(total), 0)
+        build(pkg) 
+        if i % 30 == 0:
+            regenerate_modules()
+    regenerate_modules()
+    print('')
+    print('All done!')
+  
+if __name__ == '__main__':
+    build_all()
+

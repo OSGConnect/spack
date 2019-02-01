@@ -274,11 +274,11 @@ fi;
 # set module system roots
 #
 _spack_pathadd DK_NODE    "${_sp_dotkit_root%/}/$_sp_sys_type"
-_spack_pathadd MODULEPATH "${_sp_tcl_root%/}/$_sp_sys_type"
+#_spack_pathadd MODULEPATH "${_sp_tcl_root%/}/$_sp_sys_type"
 _spack_pathadd MODULEPATH "${_sp_lmod_root%/}/$_sp_sys_type/Core"
 
-gcc_loc=$(/cvmfs/connect.opensciencegrid.org/modules/spack/bin/spack location -i gcc@4.8.5%gcc@4.8.5)
-libxml2_loc=$(/cvmfs/connect.opensciencegrid.org/modules/spack/bin/spack location -i /wtjw652)
+gcc_loc=$(/cvmfs/connect.opensciencegrid.org/modules/spack/bin/spack location -i gcc@6.4.0%gcc@4.8.5)
+libxml2_loc=$(/cvmfs/connect.opensciencegrid.org/modules/spack/bin/spack location -i /lhtbgmq)
 export PATH=$PATH:${gcc_loc}/bin
 export MANPATH=$MANPATH:${gcc_loc}/share/man
 export LIBRARY_PATH=$LIBRARY_PATH:${gcc_loc}/lib:${gcc_loc}/lib64

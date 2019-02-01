@@ -1,0 +1,29 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel7
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /bin/gfortran
+      fc: /bin/gfortran
+    spec: gcc@4.8.5spack
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel7
+    paths:
+      cc:  /cvmfs/connect.opensciencegrid.org/modules/packages/linux-rhel7-x86_64/gcc-4.8.5spack/gcc-6.4.0-k5eggrz3xdhuomx6vhowwfis4spkuhfy/bin/gcc
+      cxx: /cvmfs/connect.opensciencegrid.org/modules/packages/linux-rhel7-x86_64/gcc-4.8.5spack/gcc-6.4.0-k5eggrz3xdhuomx6vhowwfis4spkuhfy/bin/g++
+      f77: /cvmfs/connect.opensciencegrid.org/modules/packages/linux-rhel7-x86_64/gcc-4.8.5spack/gcc-6.4.0-k5eggrz3xdhuomx6vhowwfis4spkuhfy/bin/gfortran
+      fc:  /cvmfs/connect.opensciencegrid.org/modules/packages/linux-rhel7-x86_64/gcc-4.8.5spack/gcc-6.4.0-k5eggrz3xdhuomx6vhowwfis4spkuhfy/bin/gfortran
+    spec: gcc@6.4.0spack
+    target: x86_64
+
+

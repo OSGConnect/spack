@@ -1,0 +1,17 @@
+modules:
+  enable:
+    - lmod
+  lmod:
+    core_compilers:
+      - 'gcc@6.4.0spack'
+    hash_length: 0
+    # naming_scheme:: '${PACKAGE}/${VERSION}-${COMPILERNAME}-${COMPILERVER}'
+    all:
+      autoload: 'direct'
+      suffixes:
+        '^python@2.7': 'py2.7'
+        '^python@3.7': 'py3.7'
+    hierarchy:
+      - None
+    blacklist: ['%gcc@4.8.5spack']
+

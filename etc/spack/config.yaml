@@ -1,0 +1,8 @@
+config:
+  # This is the path to the root of the Spack install tree.
+  # You can use $spack here to refer to the root of the spack instance.
+  install_tree: /cvmfs/connect.opensciencegrid.org//modules/packages
+
+  module_roots:
+    lmod:  /cvmfs/connect.opensciencegrid.org/modules/modulefiles/
+
