@@ -49,9 +49,9 @@ pkgs['glib@2.56.2__py27'] = {}
 pkgs['fftw@3.3.8'] = {'options': ['simd=sse2']}
 pkgs['flex@2.6.3'] = {}
 pkgs['hdf5@1.10.3'] = {}
-pkgs['libgd@2.2.4__py27'] = {}
+pkgs['libjpeg-turbo@1.5.3'] = {}
+pkgs['libgd@2.2.4__py27'] = {'deps': ['libjpeg-turbo@1.5.3']}
 pkgs['libiconv@1.15'] = {}
-pkgs['libjpeg-turbo@1.5.90'] = {}
 pkgs['libpng@1.6.34'] = {}
 pkgs['libpthread-stubs@0.4'] = {}
 pkgs['libsigsegv@2.11'] = {}
@@ -64,7 +64,7 @@ pkgs['libedit@3.1-20170329'] = {}
 pkgs['libffi@3.2.1'] = {}
 pkgs['libice@1.0.9'] = {}
 pkgs['libsm@1.2.2'] = {}
-pkgs['libtiff@4.0.9'] = {}
+pkgs['libtiff@4.0.9'] = {'deps': ['libjpeg-turbo@1.5.3']}
 pkgs['libtool@2.4.6'] = {}
 pkgs['libx11@1.6.5'] = {}
 pkgs['libxau@1.0.8'] = {}
@@ -82,6 +82,7 @@ pkgs['pcre@8.42'] = {}
 pkgs['tar@1.30'] = {}
 pkgs['cfitsio@3.450'] = {}
 pkgs['gsl@2.5'] = {}
+pkgs['libxft@2.3.2__py27'] = {}
 
 pkgs['bowtie2@2.3.4.1__py27'] = {}
 pkgs['bwa@0.7.17'] = {}
@@ -92,11 +93,11 @@ pkgs['diffutils@3.6'] = {}
 pkgs['emacs@26.1'] = {}
 pkgs['ffmpeg@3.2.4'] = {}
 pkgs['geant4@10.04.p02'] = {'flags': ['--no-checksum'], 'options': ['mt=True']}
-### #$SPACK_INSTALL globus-toolkit@6.0.1506371041'] = {}
-pkgs['gnuplot@5.2.2__py27'] = {}
+pkgs['globus-toolkit@6.0.1506371041'] = {}
+pkgs['gnuplot@5.2.2__py27'] = {'deps': ['libjpeg-turbo@1.5.3']}
 pkgs['gobject-introspection@1.49.2__py27'] = {}
 pkgs['gperf@3.0.4'] = {}
-pkgs['gsoap@2.8.55'] = {}
+pkgs['gsoap@2.8.55__py27'] = {}
 pkgs['harfbuzz@1.4.6__py27'] = {}
 pkgs['help2man@1.47.4'] = {}
 pkgs['hisat2@2.1.0'] = {}
@@ -104,23 +105,23 @@ pkgs['icu4c@60.1'] = {}
 pkgs['inputproto@2.3.2'] = {}
 pkgs['intel-tbb@2019'] = {}
 pkgs['jdk@11.0.1'] = {}
-### #$SPACK_INSTALL --no-checksum julia@1.0.1__py27'] = {}
+pkgs['julia@1.0.1__py27'] = {'flags': ['--no-checksum']}
 pkgs['kbproto@1.0.7'] = {}
 pkgs['lammps@20180822'] = {}
 pkgs['matlab@R2018b'] = {}
 pkgs['mixmod@3.2.2'] = {'deps': ['openssl@1.0.2o', 'cmake@3.13.0']}
-pkgs['mummer@3.23__py27'] = {}
+pkgs['mummer@3.23__py27'] = {'deps': ['libjpeg-turbo@1.5.3']}
 pkgs['nasm@2.13.03'] = {}
 
 pkgs['pixman@0.34.0'] = {}
 pkgs['pkgconf@1.4.2'] = {}
 pkgs['pkgconf@1.5.4'] = {}
 pkgs['qhull@2015.2'] = {'deps': ['cmake@3.13.0']}
-pkgs['r@3.5.1__py27'] = {}
+pkgs['r@3.5.1__py27'] = {'deps': ['libjpeg-turbo@1.5.3', 'jdk@11.0.1']}
 pkgs['raxml@8.2.11'] = {'options': ['sse=False', 'mpi=False']}
 pkgs['readline@7.0'] = {}
 pkgs['renderproto@0.11.1'] = {}
-pkgs['root@6.14.04__py27'] = {'flags': ['--no-checksum'], 'deps': ['fftw@3.3.8']}
+pkgs['root@6.14.04__py27'] = {'flags': ['--no-checksum'], 'deps': ['fftw@3.3.8', 'libjpeg-turbo@1.5.3', 'libxft@2.3.2__py27']}
 pkgs['sparsehash@2.0.3'] = {}
 pkgs['sqlite@3.23.1'] = {}
 pkgs['sqlite@3.25.3'] = {}
@@ -293,6 +294,7 @@ def regenerate_modules():
         raise RuntimeError('modules could not be generated')
 
 def build_all():
+    regenerate_modules()
     total = len(pkgs)
     i = 0
     for pkg in pkgs:
