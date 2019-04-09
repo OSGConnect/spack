@@ -51,6 +51,7 @@ class Stashcache(Package):
     homepage = "https://github.com/opensciencegrid/StashCache"
     url      = "https://github.com/opensciencegrid/StashCache/archive/v5.0.0.tar.gz"
 
+    version('5.3.0', 'a76bd5931aa30367c8ff47a505029d22')
     version('5.1.2', '10af21499378eee03772bcc9436cb705')
     version('5.0.0', '89baccd756a4ec2f9c9eea64a97e26cf')
 
