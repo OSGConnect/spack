@@ -25,7 +25,6 @@ pkgs['openssl@1.1.1'] = {}
 pkgs['python@2.7.15'] = {'deps': ['openssl@1.0.2o']}
 pkgs['python@3.7.0'] = {'deps': ['openssl@1.0.2o']}
 
-
 pkgs['gettext@0.19.8.1__py27'] = {}
 pkgs['gettext@0.19.8.1__py37'] = {}
 pkgs['libxml2@2.9.8__py27'] = {}
@@ -85,6 +84,7 @@ pkgs['cfitsio@3.450'] = {}
 pkgs['gsl@2.5'] = {}
 pkgs['libxft@2.3.2__py27'] = {}
 
+pkgs['jags@4.3.0'] = {'deps': ['openblas@0.3.3']}
 pkgs['cctools@7.0.8__py27'] = {}
 pkgs['bowtie2@2.3.4.1__py27'] = {}
 pkgs['bwa@0.7.17'] = {}
@@ -128,8 +128,6 @@ pkgs['root@6.14.04__py27'] = {'flags': ['--no-checksum'], 'deps': ['fftw@3.3.8',
 pkgs['sparsehash@2.0.3'] = {}
 pkgs['sqlite@3.23.1'] = {}
 pkgs['sqlite@3.25.3'] = {}
-pkgs['stashcache@5.3.0__py27'] = {}
-pkgs['stashcache@5.1.2__py27'] = {}
 pkgs['swig@3.0.12'] = {}
 pkgs['tcl@8.6.8'] = {}
 pkgs['tk@8.6.8'] = {}
@@ -206,6 +204,7 @@ pkgs['py-six@1.11.0__py27'] = {}
 pkgs['py-six@1.11.0__py37'] = {}
 pkgs['py-subprocess32@3.2.7__py27'] = {}
 pkgs['pybullet@2.3.5__py27'] = {}
+pkgs['stashcache@5.6.2__py27'] = {'flags': ['--no-checksum'], 'deps': ['py-setuptools@40.4.3__py27']}
 
 
 def print_indent(s, level):

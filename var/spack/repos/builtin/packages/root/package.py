@@ -83,6 +83,7 @@ class Root(CMakePackage):
 
     def cmake_args(self):
         args = [
+            '-DCMAKE_CXX_FLAGS=-I/cvmfs/connect.opensciencegrid.org/modules/packages/linux-rhel7-x86_64/gcc-4.8.5spack/gcc-6.4.0-k5eggrz3xdhuomx6vhowwfis4spkuhfy/include/c++/6.4.0'
             '-Dcocoa=OFF',
             '-Dbonjour=OFF',
             '-Dx11=ON',

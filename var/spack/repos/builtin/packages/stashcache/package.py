@@ -42,27 +42,15 @@ from spack import *
 import os
 import shutil
 
-class Stashcache(Package):
+class Stashcache(PythonPackage):
     """
     Stashcp uses geo located nearby caches in order to copy from the OSG 
     Connect's stash storage service to a job's workspace on a cluster.
     """
 
     homepage = "https://github.com/opensciencegrid/StashCache"
-    url      = "https://github.com/opensciencegrid/StashCache/archive/v5.0.0.tar.gz"
+    url      = "https://files.pythonhosted.org/packages/cc/0c/43b00556c02a628216815fa8277292b034eb103326b79a1f397112edfba8/stashcp-5.6.2.tar.gz"
 
-    version('5.3.0', 'a76bd5931aa30367c8ff47a505029d22')
-    version('5.1.2', '10af21499378eee03772bcc9436cb705')
-    version('5.0.0', '89baccd756a4ec2f9c9eea64a97e26cf')
-
+    depends_on('py-setuptools')
     depends_on('xrootd')
 
-    def install(self, spec, prefix):
-        mkdirp(prefix.bin)
-        for f in os.listdir("bin"):
-            src = join_path("bin", f)
-            if os.path.isdir(src):
-                dst = join_path(prefix.bin, f)
-                shutil.copytree(src, dst)
-            else:
-                install(src, prefix.bin)

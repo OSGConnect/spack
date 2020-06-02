@@ -23,6 +23,7 @@ class Geant4(CMakePackage):
     version('10.02.p02', '6aae1d0fc743b0edc358c5c8fbe48657')
     version('10.02.p01', 'b81f7082a15f6a34b720b6f15c6289cfe4ddbbbdcef0dc52719f71fac95f7f1c')
     version('10.01.p03', '4fb4175cc0dabcd517443fbdccd97439')
+    version('9.6.p04', '105271674d63fbc67b7eb36fa527533c')
 
     variant('mt', default=True, description='Enable multithreaded Geant4')
     variant('qt', default=False, description='Enable Qt support')
@@ -34,7 +35,8 @@ class Geant4(CMakePackage):
     variant('motif', default=False, description='Optional motif support')
     variant('threads', default=True, description='Build with multithreading')
 
-    depends_on('cmake@3.5:', type='build')
+    depends_on('cmake@3.5:', type='build', when='@10:')
+    depends_on('cmake@2.8:', when='@9.6.p04')
 
     conflicts('+cxx14', when='+cxx11')
     conflicts('+cxx11', when='+cxx14')
@@ -45,6 +47,7 @@ class Geant4(CMakePackage):
     depends_on("clhep@2.3.1.1+cxx11~cxx14", when="@10.02.p01+cxx11~cxx14")
     depends_on("clhep@2.3.1.1+cxx11~cxx14", when="@10.02.p01+cxx11~cxx14")
     depends_on("clhep@2.2.0.4+cxx11~cxx14", when="@10.01.p03+cxx11~cxx14")
+    depends_on("clhep@2.1.3.1~cxx11~cxx14", when="@9.6.p04~cxx11~cxx14")
 
     # C++14 support
     depends_on("clhep@2.4.0.0~cxx11+cxx14", when="@10.04~cxx11+cxx14")
@@ -73,9 +76,11 @@ class Geant4(CMakePackage):
             '-DGEANT4_INSTALL_DATA=ON',
             '-DGEANT4_BUILD_TLS_MODEL=global-dynamic',
             '-DGEANT4_USE_SYSTEM_EXPAT=ON',
-            '-DGEANT4_USE_SYSTEM_ZLIB=ON',
+            # '-DGEANT4_USE_SYSTEM_ZLIB=ON',
             '-DXERCESC_ROOT_DIR:STRING=%s' %
             spec['xerces-c'].prefix, ]
+
+        
 
         arch = platform.system().lower()
         if arch is not 'darwin':

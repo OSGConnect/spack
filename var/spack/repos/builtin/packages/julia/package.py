@@ -118,6 +118,7 @@ class Julia(Package):
             # "USE_SYSTEM_GMP=1",
             # "USE_SYSTEM_MPFR=1",
             # "USE_SYSTEM_PCRE=1",
+            "MARCH=x86-64",
             "prefix=%s" % prefix]
         if "+cxx" in spec:
             if "@master" not in spec:

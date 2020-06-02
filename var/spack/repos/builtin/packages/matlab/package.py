@@ -23,7 +23,7 @@ class Matlab(Package):
     mirror, see http://spack.readthedocs.io/en/latest/mirrors.html"""
 
     homepage = "https://www.mathworks.com/products/matlab.html" 
-    version('R2018b', sha256='8cfcddd3878d3a69371c4e838773bcabf12aaf0362cc2e1ae7e8820845635cac')
+    version('R2018b', sha256='cc7f6e042c1b2edd5ae384c77d0b2c860e8dcfd7c5e23dbe07bf04d3a921e459')
     version('R2016b', 'b0e0b688894282139fa787b5a86a5cf7')
 
     variant(
@@ -41,7 +41,7 @@ class Matlab(Package):
     )
 
     # Licensing
-    license_required = True
+    license_required = False
     license_comment  = '#'
     license_files    = ['licenses/license.dat']
     license_vars     = ['LM_LICENSE_FILE']
@@ -50,14 +50,13 @@ class Matlab(Package):
     extendable = True
 
     def url_for_version(self, version):
-        return "file://{0}/matlab_{1}_glnxa64.zip".format(os.getcwd(), version)
+        return "file://{0}/MCR_{1}_glnxa64_installer.zip".format(os.getcwd(), version)
 
     def configure(self, spec, prefix):
         config = {
             'destinationFolder':   prefix,
-            'mode':                spec.variants['mode'].value,
-            'fileInstallationKey': spec.variants['key'].value,
-            'licensePath':         self.global_license_file
+            'mode': 'silent',
+            'agreeToLicense': 'yes'
         }
 
         # Store values requested by the installer in a file
@@ -72,4 +71,12 @@ class Matlab(Package):
         # Full path required
         input_file = join_path(
             self.stage.source_path, 'spack_installer_input.txt')
+        print(subprocess.call(['./install', '-inputFile', input_file]))
         subprocess.call(['./install', '-inputFile', input_file])
+
+    def setup_environment(self, spack_env, run_env):
+        run_env.prepend_path('LD_LIBRARY_PATH', self.prefix + '/runtime/glnxa64')
+        run_env.prepend_path('LD_LIBRARY_PATH', self.prefix + '/bin/glnxa64')
+        run_env.prepend_path('LD_LIBRARY_PATH', self.prefix + '/sys/os/glnxa64')
+        run_env.prepend_path('LD_LIBRARY_PATH', self.prefix + '/sys/opengl/lib/glnxa64')
+
